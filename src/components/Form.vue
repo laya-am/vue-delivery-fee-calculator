@@ -4,22 +4,24 @@ import CartValueInput from './CartValueInput.vue'
 import DistanceInput from './DistanceInput.vue'
 import NumOfItemsInput from './NumOfItemsInput.vue'
 import OrderTime from './OrderTime.vue'
-import { reactive, ref } from 'vue'
+import { ref, reactive } from 'vue'
 
 const data = reactive({ cartValue: 0, distance: 0, numOfItems: 0, orderTime: '' })
-
-function handleSubmit() {
-  console.log('data1: ', data.cartValue)
-  console.log('data2: ', data.distance)
-  console.log('data3: ', data.numOfItems)
-  console.log('data4: ', data.orderTime)
-  const newFee = calculateFee(data)
-  console.log('form submitted. fee: ', newFee)
-}
+const emit = defineEmits(['updateFee'])
+// const myForm = ref(null)
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form
+    ref="myForm"
+    @submit.prevent="
+      () => {
+        const newFee = calculateFee(data)
+        emit('updateFee', newFee)
+        // myForm.reset()
+      }
+    "
+  >
     <CartValueInput :cartValue="data.cartValue" @update="(value) => (data.cartValue = value)" />
     <DistanceInput :distance="data.distance" @update="(value) => (data.distance = value)" />
     <NumOfItemsInput :numOfItems="data.numOfItems" @update="(value) => (data.numOfItems = value)" />

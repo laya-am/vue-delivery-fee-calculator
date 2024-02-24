@@ -6,7 +6,6 @@
 //   }
 
 export function calculateFee(data) {
-  console.log('data in calculateFee: ', data)
   const { cartValue, distance, numOfItems, orderTime } = data
 
   const cartSurcharge = cartValue < 10 ? 10 - cartValue : 0

@@ -1,87 +1,38 @@
+<script setup>
+import { calculateFee } from '../assets/calculateFee'
+import CartValueInput from './CartValueInput.vue'
+import DistanceInput from './DistanceInput.vue'
+import NumOfItemsInput from './NumOfItemsInput.vue'
+import OrderTime from './OrderTime.vue'
+import { reactive, ref } from 'vue'
+
+const data = reactive({ cartValue: 0, distance: 0, numOfItems: 0, orderTime: '' })
+
+function handleSubmit() {
+  console.log('data1: ', data.cartValue)
+  console.log('data2: ', data.distance)
+  console.log('data3: ', data.numOfItems)
+  console.log('data4: ', data.orderTime)
+  const newFee = calculateFee(data)
+  console.log('form submitted. fee: ', newFee)
+}
+</script>
+
 <template>
-  <div class="item">
-    <i>
-      <slot name="icon"></slot>
-    </i>
-    <div class="details">
-      <h3>
-        <slot name="heading"></slot>
-      </h3>
-      <slot></slot>
-    </div>
-  </div>
+  <form @submit.prevent="handleSubmit">
+    <CartValueInput :cartValue="data.cartValue" @update="(value) => (data.cartValue = value)" />
+    <DistanceInput :distance="data.distance" @update="(value) => (data.distance = value)" />
+    <NumOfItemsInput :numOfItems="data.numOfItems" @update="(value) => (data.numOfItems = value)" />
+    <OrderTime :orderTime="data.orderTime" @update="(value) => (data.orderTime = value)" />
+    <button>Submit</button>
+  </form>
 </template>
 
 <style scoped>
-.item {
-  margin-top: 2rem;
+form {
   display: flex;
-  position: relative;
-}
-
-.details {
-  flex: 1;
-  margin-left: 1rem;
-}
-
-i {
-  display: flex;
-  place-items: center;
-  place-content: center;
-  width: 32px;
-  height: 32px;
-
-  color: var(--color-text);
-}
-
-h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: var(--color-heading);
-}
-
-@media (min-width: 1024px) {
-  .item {
-    margin-top: 0;
-    padding: 0.4rem 0 1rem calc(var(--section-gap) / 2);
-  }
-
-  i {
-    top: calc(50% - 25px);
-    left: -26px;
-    position: absolute;
-    border: 1px solid var(--color-border);
-    background: var(--color-background);
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
-  }
-
-  .item:before {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    bottom: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:after {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    top: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:first-of-type:before {
-    display: none;
-  }
-
-  .item:last-of-type:after {
-    display: none;
-  }
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 </style>
